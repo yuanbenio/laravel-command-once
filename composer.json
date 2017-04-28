@@ -1,0 +1,20 @@
+{
+    "name": "larastarscn/command-once",
+    "description": "execute command only once",
+    "keywords": ["laravel", "command-once"],
+    "license": "MIT",
+    "require": {
+        "laravel/framework" : "~5.0"
+    },
+    "authors": [
+        {
+            "name": "Dearmadman",
+            "email": "i@dearmadman.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Larastarscn\\CommandOnce\\": "src/"
+        }
+    }
+}
