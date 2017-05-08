@@ -16,5 +16,10 @@
         "psr-4": {
             "Yuanben\\CommandOnce\\": "src/"
         }
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
     }
 }
