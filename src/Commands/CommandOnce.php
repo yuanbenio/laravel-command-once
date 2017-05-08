@@ -1,6 +1,6 @@
 <?php
 
-namespace Larastarscn\CommandOnce\Commands;
+namespace Yuanben\CommandOnce\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;

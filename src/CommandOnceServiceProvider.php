@@ -1,8 +1,8 @@
 <?php
-namespace Larastarscn\CommandOnce;
+namespace Yuanben\CommandOnce;
 
 use Illuminate\Support\ServiceProvider;
-use Larastarscn\CommandOnce\Commands\CommandOnce;
+use Yuanben\CommandOnce\Commands\CommandOnce;
 
 class CommandOnceServiceProvider extends ServiceProvider
 {

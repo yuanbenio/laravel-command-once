@@ -1,5 +1,5 @@
 {
-    "name": "larastarscn/command-once",
+    "name": "yuanben/laravel-command-once",
     "description": "execute command only once",
     "keywords": ["laravel", "command-once"],
     "license": "MIT",
@@ -14,7 +14,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Larastarscn\\CommandOnce\\": "src/"
+            "Yuanben\\CommandOnce\\": "src/"
         }
     }
 }
