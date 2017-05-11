@@ -66,15 +66,52 @@ class CommandOnce extends Command
 
             try {
                 $this->info('');
-                $this->info('Start execute command: '. $command);
-                $this->call($command);
-                $this->info('Execute command '. $command. ' Success.');
+                $this->info('Start execute command: ' . $command);
+
+                list($commandName, $arguments) = $this->splitCommand($command);
+                $this->call($commandName, $arguments);
+
+                $this->info('Command: '. $commandName);
+                logger($arguments);
+                $this->info('Arguments: '. json_encode($arguments));
+
+                $this->info('Execute command ' . $command . ' Success.');
                 $this->info('');
                 $this->saveLog($command, $version);
             } catch (\Exception $e) {
-               $this->error($e->getMessage());
+                $this->error($e->getMessage());
             }
         }
+    }
+
+    /**
+     * List command name and arguments from command string.
+     *
+     * @param $command
+     * @return array
+     */
+    protected function splitCommand($command)
+    {
+        $collect = collect(explode(' ', $command));
+        $commandName = $collect->first();
+        $collect->forget(0);
+
+        $filtered = $collect->filter(function ($item) {
+            return $item !== '';
+        })->toArray();
+
+        $filtered = array_values($filtered);
+
+        $arguments = [];
+        foreach ($filtered as $argument) {
+            $argument = trim($argument, '{');
+            $argument = trim($argument, '}');
+            $argument = explode(':', $argument);
+            $argument = [$argument[0] => $argument[1]];
+            $arguments = array_merge($arguments, $argument);
+        }
+
+        return [$commandName, $arguments];
     }
 
     /**

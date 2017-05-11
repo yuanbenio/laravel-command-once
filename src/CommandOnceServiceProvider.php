@@ -15,7 +15,6 @@ class CommandOnceServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/Migrations' => database_path('migrations'),
-            __DIR__.'/command.php' => config_path('command.php'),
         ]);
 
         if (app()->runningInConsole()) {
