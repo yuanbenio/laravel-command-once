@@ -34,7 +34,8 @@ Within `command.php` file, you need list what commands do you want execute just 
         'execs' => [
             'storage:link' => 'v0.0.1',
             'db:seed' => 'my version',
-            'cache:clear {--help:} {store:redis} => 'version'
+            'cache:clear {--help:} {store:redis} => 'version',
+            '!ls -al' => 'version'
         ]
     ];
 
