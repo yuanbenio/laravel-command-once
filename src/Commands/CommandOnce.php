@@ -4,6 +4,7 @@ namespace Yuanben\CommandOnce\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Process\Process;
 
 class CommandOnce extends Command
 {
@@ -12,7 +13,9 @@ class CommandOnce extends Command
      *
      * @var string
      */
-    protected $signature = 'command:once';
+    protected $signature = 'command:once
+                            {--force :  Force the operation to run.}
+                            ';
 
     /**
      * The console command description.
@@ -45,6 +48,7 @@ class CommandOnce extends Command
             return true;
         }
 
+        $this->checkArguments();
         $this->process($execs);
         $this->info('All command executed.');
     }
@@ -68,12 +72,7 @@ class CommandOnce extends Command
                 $this->info('');
                 $this->info('Start execute command: ' . $command);
 
-                list($commandName, $arguments) = $this->splitCommand($command);
-                $this->call($commandName, $arguments);
-
-                $this->info('Command: '. $commandName);
-                logger($arguments);
-                $this->info('Arguments: '. json_encode($arguments));
+                $this->executeCommand($command);
 
                 $this->info('Execute command ' . $command . ' Success.');
                 $this->info('');
@@ -81,6 +80,33 @@ class CommandOnce extends Command
             } catch (\Exception $e) {
                 $this->error($e->getMessage());
             }
+        }
+    }
+
+    /**
+     * Execute artisan command or shell.
+     *
+     * @param $command
+     * @throws \Exception
+     */
+    public function executeCommand($command)
+    {
+        if (strpos($command, '!') === false)  {
+            list($commandName, $arguments) = $this->splitCommand($command);
+            $this->call($commandName, $arguments);
+
+            $this->info('Command: '. $commandName);
+            $this->info('Arguments: '. json_encode($arguments));
+        } else {
+            $command = substr($command, 1);
+            $process = new Process($command);
+            $process->run();
+
+            if (! $process->isSuccessful()) {
+                throw new \Exception($process->getErrorOutput());
+            }
+
+            $this->info($process->getOutput());
         }
     }
 
@@ -157,5 +183,23 @@ class CommandOnce extends Command
     public function db()
     {
         return DB::table('command_once');
+    }
+
+    /**
+     * Check the arguments and do some pre-process.
+     */
+    public function checkArguments()
+    {
+        if ($this->option('force')) {
+            $this->force();
+        }
+    }
+
+    /**
+     * Clear the executed logs.
+     */
+    public function force()
+    {
+        $this->db()->truncate();
     }
 }
